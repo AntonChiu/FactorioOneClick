@@ -1,28 +1,54 @@
 @echo off 
 
-@REM è¿œç¨‹æœåŠ¡å™¨ip
+@REM remote_ip          Ô¶³Ì·şÎñÆ÷ip
+@REM save_file          ´æµµÎÄ¼şÃû
+@REM username           FactorioÕË»§Ãû
+@REM password           FactorioÕË»§ÃÜÂë
+@REM game_password      ÓÎÏ··¿¼äÃÜÂë
+@REM visibility_public  ÊÇ·ñÄÜ±»ÓÎÏ·´óÌüËÑË÷µ½
+@REM admins             ¹ÜÀíÔ±½ÇÉ«Ãû³ÆÁĞ±í
+
 set remote_ip=11.22.33.44
-@REM å­˜æ¡£æ–‡ä»¶
 set save_file="test1.zip"
-@REM Factorioè´¦æˆ·å
 set username=FACUSER
-@REM Factorioè´¦æˆ·å¯†ç 
 set password=PASSWORD123
-@REM æ¸¸æˆæˆ¿é—´å¯†ç 
 set game_password=114514
-@REM æ˜¯å¦èƒ½è¢«æ¸¸æˆå¤§å…æœç´¢åˆ°
 set visibility_public=false
-@REM ç®¡ç†å‘˜è§’è‰²åç§°åˆ—è¡¨
 set admins="PLAYER1","PLAYER2","PLAYER3"
 
-@REM ä¸‹é¢å‡ é¡¹ä¸ç”¨æ”¹
-@REM æœåŠ¡å™¨é…ç½®æ–‡ä»¶
+@REM ÏÂÃæ¼¸Ïî²»ÓÃ¸Ä
+@REM setting_file       ·şÎñÆ÷ÅäÖÃÎÄ¼ş
+@REM admin_list_file    ¹ÜÀíÔ±ÁĞ±íÎÄ¼ş
+@REM start_script       Æô¶¯½Å±¾ÎÄ¼ş
 set setting_file="server-settings.json"
-@REM ç®¡ç†å‘˜åˆ—è¡¨æ–‡ä»¶
 set admin_list_file="server-adminlist.json"
-@REM å¯åŠ¨è„šæœ¬æ–‡ä»¶
 set start_script="start.sh"
 
+@echo ===========================================
+@echo ±¾ÎÄ¼şÊÇFactorio·şÎñ¶ËÒ»¼ü²¿Êğ½Å±¾
+@echo -------------------------------------------
+@echo Ê¹ÓÃ·½·¨
+@echo 1. ½«±¾µØÒìĞÇ¹¤³§´æµµ(.zip)ÎÄ¼ş·ÅÈë½Å±¾ÎÄ¼şËùÔÚÄ¿Â¼
+@echo 2. ÓÒ¼ü½Å±¾ÎÄ¼ş£¬»òÊ¹ÓÃVSCodeµÈ¹¤¾ß±à¼­½Å±¾ÎÄ¼ş£¬ĞŞ¸ÄÌîĞ´µÚ11ĞĞ~µÚ17ĞĞ£¬°üÀ¨ÒÔÏÂÄÚÈİ
+@echo   2-1. remote_ip          Ô¶³Ì·şÎñÆ÷ip
+@echo   2-2. save_file          ´æµµÎÄ¼şÃû
+@echo   2-3. username           FactorioÕË»§Ãû
+@echo   2-4. password           FactorioÕË»§ÃÜÂë
+@echo   2-5. game_password      ÓÎÏ··¿¼äÃÜÂë
+@echo   2-6. visibility_public  ÊÇ·ñÄÜ±»ÓÎÏ·´óÌüËÑË÷µ½
+@echo   2-7. admins             ¹ÜÀíÔ±½ÇÉ«Ãû³ÆÁĞ±í
+@echo 3. Ë«»÷ÔËĞĞ½Å±¾ÎÄ¼ş
+@echo 4. ÔÚÃüÁîĞĞµ¯³öÄ³¸öÑ¯ÎÊ[yes/no]Ê±£¬ÊäÈëyes£¨ÕâÊÇÊ×´ÎÔ¶³ÌÁ¬½Ó¸Ã·şÎñÆ÷²Å»á³öÏÖµÄÑ¯ÎÊ£¬ºóĞøÁ¬½Ó²»»áÔÙ³öÏÖ£©
+@echo 5. ÔÚÃüÁîĞĞÖĞµ¯³öÊäÈëÃÜÂëµÄÑ¯ÎÊÊ±£¬ÊäÈëÔÆ·şÎñÆ÷µÄµÇÂ½ÃÜÂë£¨Ò»¹²³öÏÖÁ½´Î£¬Ò»´ÎÎªÉÏ´«ÎÄ¼ş£¬Ò»´ÎÎªµÇÂ½Ô¶³Ì·şÎñÆ÷ÔËĞĞ½Å±¾£©
+@echo 6. ÃüÁîĞĞ×îºóÒ»ĞĞ³öÏÖ¡°°´ÈÎÒâ¼ü¼ÌĞø¡­¡­¡±»ò¡°°´Enter¼ü¼ÌĞø¡­¡­¡±×ÖÑùÊ±£¬Íê³É·şÎñ¶Ë´î½¨¡£ÔÚÓÎÏ·ÖĞ¡°¶àÈËÓÎÏ·¡±-¡°·şÎñÆ÷Ö±Á¬¡±ÖĞÊäÈë·şÎñÆ÷ip¼´¿ÉÓÎÍæ¡£
+@echo ===========================================
+@echo ÇëÔÚÖ´ĞĞÇ°È·±£
+@echo 1. ÒÑ½«Ò»¸öÓÎÏ·´æµµÖÃÓÚµ±Ç°Ä¿Â¼ÏÂ
+@echo 2. ÒÑ±à¼­±¾ÎÄ¼şÖĞµÄÅäÖÃÏî
+@echo 3. Ô¶³Ì·şÎñÆ÷ÒÑ¿ª·Å34197¶Ë¿Ú
+@echo ===========================================
+
+pause
 
 @echo off
 REM Step 1: Create the setting file
@@ -105,6 +131,6 @@ scp _fac_pack.tar.gz root@%remote_ip%:/root/
 @REM Step 6: Connect to the server and execute commands
 ssh root@%remote_ip% "tar -xavf _fac_pack.tar.gz; wget -O factorio.tar.xz https://factorio.com/get-download/stable/headless/linux64; tar xvf factorio.tar.xz;  chmod 777 ./start.sh; screen -S fac -dm bash -c './%start_script%'"
 
-echo å¼‚æ˜Ÿï¼Œå¯åŠ¨ï¼
+@echo ÒìĞÇ£¬Æô¶¯£¡
 
 pause
