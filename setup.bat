@@ -149,7 +149,7 @@ scp _fac_pack.tar.gz root@%remote_ip%:/root/
 
 
 @REM Step 6: Connect to the server and execute commands
-ssh root@%remote_ip% "tar -xavf _fac_pack.tar.gz; wget -O factorio.tar.xz https://factorio.com/get-download/stable/headless/linux64; tar xvf factorio.tar.xz;  chmod 777 ./start.sh; screen -S fac -dm bash -c './%start_script%'"
+ssh root@%remote_ip% "screen -ls | grep -q 'fac' && screen -S fac -X quit; tar -xavf _fac_pack.tar.gz; wget -O factorio.tar.xz https://factorio.com/get-download/stable/headless/linux64; tar xvf factorio.tar.xz; chmod 777 ./start.sh; screen -S fac -dm bash -c './%start_script%'"
 
 @echo “Ï–«£¨∆Ù∂Ø£°
 
