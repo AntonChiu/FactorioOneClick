@@ -7,6 +7,7 @@
 @REM game_password      游戏房间密码
 @REM visibility_public  是否能被游戏大厅搜索到
 @REM admins             管理员角色名称列表
+@REM keep_aux_files     本地是否保留配置文件等辅助文件
 
 set remote_ip=11.22.33.44
 set save_file="test1.zip"
@@ -15,6 +16,7 @@ set password=PASSWORD123
 set game_password=114514
 set visibility_public=false
 set admins="PLAYER1","PLAYER2","PLAYER3"
+set keep_aux_files=false
 
 @REM 下面几项不用改
 @REM setting_file       服务器配置文件
@@ -24,6 +26,7 @@ set setting_file="server-settings.json"
 set admin_list_file="server-adminlist.json"
 set start_script="start.sh"
 
+cls
 @echo ===========================================
 @echo 本文件是Factorio服务端一键部署脚本
 @echo -------------------------------------------
@@ -50,6 +53,23 @@ set start_script="start.sh"
 
 pause
 
+cls
+@echo ===========================================
+@echo ===========================================
+@echo 选择功能
+@echo -------------------------------------------
+@echo [1] 上传存档一键开服（新服务器或新存档）
+@echo [2] 更新服务器游戏版本并开服（曾上传存档一键开服过）
+@echo [3] 退出
+@echo ===========================================
+set /p choice=请输入选项号[1-3]：
+if "%choice%"=="1" goto upload
+if "%choice%"=="2" goto update
+if "%choice%"=="3" goto end
+goto end
+
+
+:upload 
 @echo off
 REM Step 1: Create the setting file
 
@@ -133,4 +153,17 @@ ssh root@%remote_ip% "tar -xavf _fac_pack.tar.gz; wget -O factorio.tar.xz https:
 
 @echo 异星，启动！
 
+if %keep_aux_files%==true (
+    goto end
+)
+
+@REM Step 7: Remove the local files
+del _fac_pack.tar.gz %setting_file% %admin_list_file% %start_script%
+goto end 
+
+:update 
+ssh root@%remote_ip% "screen -S fac -X quit; wget -O factorio.tar.xz https://factorio.com/get-download/stable/headless/linux64; tar xvf factorio.tar.xz; screen -S fac -dm bash -c './%start_script%'"
+goto end
+
+:end 
 pause
